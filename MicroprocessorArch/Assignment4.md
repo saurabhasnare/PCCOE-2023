@@ -1,0 +1,6 @@
+Assignment A-4 Conversion of BCD TO HEX AND HEX TO BCD
+
+1-HEX TO BCD 2-BCD TO HEX 3-EXIT1
+
+
+HEX TO BCD
