@@ -1,0 +1,124 @@
+section .data
+
+msg db "before block trasfer",10
+msg_len equ $-msg
+
+msg1 db "After block trasfer",10
+msg1_len equ $-msg1
+
+srcblock db "source block",10
+srcblock_len equ $-srcblock
+
+destblock db 10,13"dest block",10
+destblock_len equ $-destblock
+
+space db " "
+
+sblock db 10h,20h,30h,40h,50h
+dblock times 5 db 0
+
+section .bss
+char_ans resb 2
+
+
+%macro exit 0
+mov rax,60
+mov rdi,0
+syscall
+%endmacro
+
+%macro print 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+section .text
+global _start
+_start:
+
+
+print msg,msg_len
+print srcblock,srcblock_len
+mov rsi,sblock
+call display_block
+
+
+
+print destblock,destblock_len
+mov rsi,dblock-2
+call display_block
+
+
+call block_transer
+print msg1,msg1_len
+
+print srcblock,srcblock_len
+mov rsi,sblock
+call display_block
+
+
+
+print destblock,destblock_len
+mov rsi,dblock-2
+call display_block
+
+exit
+
+display:
+mov rbx,16
+mov rcx,2
+mov rsi,char_ans+1
+
+cnt:
+mov rdx,0
+div rbx ;ax->quotient dx->remainder
+
+cmp dl,09h
+jbe add30h
+add dl,07h
+add30h:
+add dl,30h
+
+mov [rsi],dl
+dec rsi
+dec rcx
+jnz cnt
+
+print char_ans,4
+
+ret
+
+
+block_transer:
+
+mov rsi,sblock+4
+mov rdi,dblock+2
+mov rcx,5
+next_num_transfer:
+mov al,[rsi]
+mov [rdi],al
+dec rsi
+dec rdi
+dec rcx
+jnz next_num_transfer
+ret
+
+
+display_block:
+mov rbp,5
+next_num:
+mov al,[rsi]
+
+push rsi
+call display
+print space,1
+pop rsi
+inc rsi
+dec rbp
+jnz next_num
+ret
+
+

@@ -1,0 +1,77 @@
+section .data
+msg db "Enter the string to calculate length :",10
+msg_len equ $-msg
+
+msg1 db "The length of string is :",10
+msg1_len equ $-msg1
+
+
+section .bss
+string resb 50
+string1 equ $-string
+count resb 1
+char_ans resb 2
+
+%macro print 2
+mov rax,1
+mov rdi,1
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+%macro exit 0
+mov rax,60
+mov rdi,0
+syscall
+%endmacro
+
+%macro read 2
+mov rax,0
+mov rdi,0
+mov rsi,%1
+mov rdx,%2
+syscall
+%endmacro
+
+
+section .text
+global _start
+
+_start:
+
+print msg,msg_len
+read string,string1
+mov [count],rax
+
+print msg1,msg1_len
+mov rax,[count]
+call display
+exit
+
+display:
+
+mov rbx,16
+mov rsi,char_ans+1
+mov rcx,2
+
+
+loop1:
+    mov rdx,00
+    div rbx
+    
+    cmp dl,09h
+    jbe add30
+    add dl,07h
+    
+    add30:
+    add dl,30h
+    mov [rsi],dl
+    dec rsi
+    dec rcx
+    
+    jnz loop1
+    print char_ans,2
+    ret
+    
+    
