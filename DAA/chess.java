@@ -13,7 +13,7 @@ import java.util.*;
 
 public class chess{
     static int cnt=0;
-    public static void moveKnight(int[][] chessboard,int rowArray[],int colArray[],int row, int col){
+    public static int moveKnight(int[][] chessboard,int rowArray[],int colArray[],int row, int col){
 
             if(chessboard[row][col]==0){
                 
@@ -39,19 +39,12 @@ public class chess{
                     
                 }
             }
+            
+            return cnt;
 
-            System.out.println(cnt);
+          //  System.out.println(cnt);
 
-            for(int i=0;i<8;i++){
-                System.out.println("{");
-                for(int j=0;j<8;j++){
-
-                    System.out.print(chessboard[i][j]+",");
-                }
-
-                System.out.println("}");
-            }
-
+        
 
     }
     public static void main(String args[]){
@@ -73,9 +66,19 @@ public class chess{
       // chessboard
      // Arrays.fill(chessboard,0);
 
-      moveKnight(chessboard,row,col,0,0);
+      int cnt=moveKnight(chessboard,row,col,0,0);
 
+            for(int i=0;i<8;i++){
+                System.out.println("{");
+                for(int j=0;j<8;j++){
 
+                    System.out.print(chessboard[i][j]+",");
+                }
+
+                System.out.print("}");
+            }
+
+            System.out.println("total moves :"+cnt);
     }
 }
 
